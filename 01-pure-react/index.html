@@ -7,16 +7,25 @@
   </head>
   <body>
     <div id="root"></div>
-    <script src-"https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src-"https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script function App(){
-        return React.createElement("header",null,"HEllo React");
-    }
-    >
-    const root=ReactDOM.createRoot(document.getElementById("root"));
-    root.render(React.createElement(App))
-</script>
-
-    
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script>
+      function App() {
+        // const time = new Date().toLocaleTimeString();
+        const [time, setTime] = React.useState(new Date().toLocaleTimeString());
+        React.useEffect(function () {
+          setInterval(() => {
+            setTime(new Date().toLocaleTimeString());
+          }, 1000);
+        }, []);
+        return React.createElement(
+          "h1", //Header name
+          null, //props
+          `this the text inside a APP component, Now time is ${time}`, //content within html tag
+        );
+      }
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(React.createElement(App));
+    </script>
   </body>
 </html>
