@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+
 const pizzaData = [
   {
     name: "Focaccia",
@@ -71,13 +72,47 @@ function Header() {
 }
 
 function Menu() {
+  const pizzaList = pizzaData;
+  const numPizzas = pizzaList.length;
   return (
     <main className="menu">
       <h2>Our menu</h2>
-      <Pizza />
-      <Pizza />
-      <Pizza />
+
+      {numPizzas > 0 ? (
+        <React.Fragment>
+          <p>
+            Authentic italian cuisine, 6 creative dishes to choose from. All
+            from our stone oven, all organic and all delicious.
+          </p>
+          <ul className="pizzas">
+            {/* {pizzaData.map(pizza=><Pizza name={pizza.name} ingredients={pizza.ingredients} photoName={pizza.photoName} price={pizza.price}/>)}
+             */}
+            {pizzaList.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        </React.Fragment>
+      ) : (
+        <p>WE're still working on the menu. Please come back later :) </p>
+      )}
+      {/* <Pizza name="Focaccia" ingredients="Bread with italian olive oil and rosemary" photoName="pizzas/focaccia.jpg" price={10}/>
+      <Pizza name="Pizza Margherita" ingredients="Tomato and mozarella" photoName="pizzas/margherita.jpg" price={12}/> */}
     </main>
+  );
+}
+
+// so for the below one we can use props instead of pizzaObj but remember to add {} (curly braces)which mean destructinh the object
+function Pizza({ pizzaObj }) {
+  console.log(pizzaObj, "sadsvb");
+  return (
+    <div className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
+      <img src={pizzaObj.photoName} alt={pizzaObj.name} />
+      <div>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        <span>{pizzaObj.soldOut ? "SOLD OUT" : pizzaObj.price}</span>
+      </div>
+    </div>
   );
 }
 
@@ -93,29 +128,36 @@ function Footer() {
   // return React.createElement("footer", null, "We're currently open");
   return (
     <footer className="footer">
-      {" "}
-      {new Date().toLocaleTimeString()}. We're currently open
+      {isOpen ? (
+        <Order closeHours={closeHour} openHour={openHour} />
+      ) : (
+        <p>
+          Sorry we're closed. We're happy to welcome you between {closeHour}:00
+          - {openHour}:00
+        </p>
+      )}
     </footer>
   );
 }
 
-function Pizza() {
+const Order = ({ closeHours, openHour }) => {
   return (
-    <div>
-      <img src="pizzas/focaccia.jpg" alt="Focaccia Pizza" />
-      <h3>Focaccia</h3>
-      <p>Bread with italian olive oil and rosemary</p>
+    <div className="order">
+      <p>
+        We're open from {openHour}:00 to {closeHours}:00. Come vist us or order
+        online.
+      </p>
+      <button className="btn">Order now</button>
     </div>
   );
-}
-
+};
 //React v18
 const root = ReactDOM.createRoot(document.getElementById("root"));
 /* Adding strict mode */
 root.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 
 //React before v18
